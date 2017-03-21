@@ -1,31 +1,46 @@
 import webpack from 'webpack';
 import fs from 'fs';
+import path from 'path';
 import _ from 'lodash';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
-var isProd = _.includes(process.argv, '-p');
+const ROOT_PATH = path.resolve(__dirname);
+const SRC_PATH = path.resolve(ROOT_PATH, 'app');
+const BUILD_PATH = path.resolve(ROOT_PATH, 'dist');
+const IS_PROD = _.includes(process.argv, '-p');
 
 export default {
-  context: __dirname + '/app',
+  // context: ROOT_PATH + '/app',
   entry: {
-    javascript: './index.js',
-    html: './index.html',
+    app: [
+      'babel-polyfill',
+      // 'react-hot-loader/patch',
+      path.resolve(SRC_PATH, 'index.js'),
+    ]
   },
   output: {
-    path: __dirname + '/dist',
-    filename: '[name].[ext]'
+    path: BUILD_PATH,
+    publicPath: '/dist',
+    filename: 'bundle.js'
   },
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify(isProd ? 'production' : 'development')
+        NODE_ENV: JSON.stringify(IS_PROD ? 'production' : 'development')
       }
+    }),
+    // new webpack.HotModuleReplacementPlugin(),
+    new HtmlWebpackPlugin({
+      template: path.resolve(SRC_PATH, 'index.template.ejs'),
+      inject: 'body'
     })
     // new ExtractTextPlugin('[name].css'),
     // new StringReplacePlugin()
   ],
   devServer: {
-    contentBase: __dirname + '/app',
+    contentBase: BUILD_PATH,
     compress: true,
+    hot: true,
     port: 9000
   },
   module: {
@@ -59,15 +74,15 @@ export default {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
       },
-      {
-        test: /\.html$/,
-        use: [{
-          loader: 'file-loader',
-          query: {
-            name: '[name].[ext]'
-          }
-        }]
-      },
+      // {
+      //   test: /\.html$/,
+      //   use: [{
+      //     loader: 'file-loader',
+      //     query: {
+      //       name: '[name].[ext]'
+      //     }
+      //   }]
+      // },
     ]
   }
 };
