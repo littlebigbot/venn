@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Provider } from 'react-redux'
-//import { Router } from 'react-router'
 import { ConnectedRouter } from 'react-router-redux'
+import './Root.css'
 
 class Root extends Component {
 	render() {

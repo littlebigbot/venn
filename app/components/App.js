@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash';
 
 function App(props){
-  return <div>App{props.children}</div>
+  return <div>WHY THIS{props.children}</div>
 }
 
 // export default connect(state => state, {

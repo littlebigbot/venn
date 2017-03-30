@@ -14,7 +14,8 @@ export default {
   entry: {
     app: [
       'babel-polyfill',
-      // 'react-hot-loader/patch',
+      'react-hot-loader/patch',
+      'webpack-hot-middleware/client',
       path.resolve(SRC_PATH, 'index.js'),
     ]
   },
@@ -29,7 +30,7 @@ export default {
         NODE_ENV: JSON.stringify(IS_PROD ? 'production' : 'development')
       }
     }),
-    // new webpack.HotModuleReplacementPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(SRC_PATH, 'index.template.ejs'),
       inject: 'body'
@@ -37,34 +38,13 @@ export default {
     // new ExtractTextPlugin('[name].css'),
     // new StringReplacePlugin()
   ],
-  devServer: {
-    contentBase: BUILD_PATH,
-    compress: true,
-    hot: true,
-    port: 9000
-  },
+  devtool: 'inline-source-map',
   module: {
     rules: [
       {
         test: /\.js?$/,
         exclude: /node_modules/,
-        use: [
-          'react-hot-loader',
-          {
-            loader: 'babel-loader',
-            query: {
-              presets: [
-                'es2015',
-                'react',
-                'stage-0'
-              ],
-              plugins: [
-                'transform-object-rest-spread',
-                'extensible-destructuring'
-              ]
-            }
-          }
-        ]
+        use: ['react-hot-loader/webpack', 'babel-loader']
       },
       // {
       //   test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*$|$)/,
