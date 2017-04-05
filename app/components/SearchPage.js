@@ -54,13 +54,13 @@ class SearchPage extends Component {
 	render() {
     const { people, addPerson, removePerson, searchResults } = this.props;
     const noResults = searchResults.data.every(isEmpty) && !searchResults.loading
-		return <div className="SearchPage">
+		return <div styleName="SearchPage">
       <header>
   			{people.map(this._renderSearchInput)}
-        {people.length < 5 && <a onClick={addPerson}>Add Person</a>}
+        {people.length < 4 && <a onClick={addPerson}>Add Person</a>}
         {people.length > 2 && <a onClick={removePerson}>Remove Person</a>}
       </header>
-      <div className="search-results-wrapper">
+      <div styleName="search-results-wrapper">
   			{noResults && <div>No Results</div>}
         {searchResults.loading && <div>Searching</div>}
         {(!searchResults.loading && !noResults) && searchResults.data.map(this._renderSearchResults)}

@@ -5,7 +5,7 @@ import { routerReducer as routing } from 'react-router-redux'
 import { combineReducers } from 'redux'
 import _ from 'lodash';
 
-const MAX_PEOPLE = 5;
+const MAX_PEOPLE = 4;
 const MIN_PEOPLE = 2;
 
 const defaultAsyncState = {

@@ -1,6 +1,7 @@
 import { reduce, isUndefined, includes } from 'lodash';
+import env from './env';
 
-const API_ROOT = 'http://api.themoviedb.org/3';
+const API_ROOT = env.api;
 const API_KEY = 'cfa0adf468d2103f9def27b896a6f917';
 
 function serialize(obj) {

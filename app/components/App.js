@@ -4,8 +4,9 @@ import { connect } from 'react-redux'
 // import { logout } from '../actions'
 import _ from 'lodash';
 
+// I dunno if we need this but we'll see
 function App(props){
-  return <div>WHY THIS{props.children}</div>
+  return <div>{props.children}</div>
 }
 
 // export default connect(state => state, {

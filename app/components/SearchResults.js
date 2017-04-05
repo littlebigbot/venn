@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './SearchResults'
+import './SearchResults.css'
 
 class SearchResults extends Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class SearchResults extends Component {
   }
 	render() {
     const { results } = this.props;
-		return <div className="SearchResults">
+		return <div styleName="SearchResults">
 			{results && results.map(this._renderPerson)}
 		</div>;
 	}
