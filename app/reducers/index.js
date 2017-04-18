@@ -4,9 +4,8 @@ import { search, addPerson, removePerson, updatePerson, selectPerson } from '../
 import { routerReducer as routing } from 'react-router-redux'
 import { combineReducers } from 'redux'
 import _ from 'lodash';
-
-const MAX_PEOPLE = 4;
-const MIN_PEOPLE = 2;
+import { MAX_PEOPLE, MIN_PEOPLE, INIT_PEOPLE } from '../constants';
+import colorHash from 'material-color-hash';
 
 const defaultAsyncState = {
   loading: false,
@@ -20,12 +19,13 @@ const defaultSearchResultsState = {
   data: [{}, {}]
 };
 
-const defaultPersonState = {
+const defaultPersonState = () => ({
   query: '',
   loading: false,
   data: null,
-  error: null
-};
+  error: null,
+  style: colorHash(Math.random().toString(36).substring(7))
+});
 
 Array.prototype.updateAtIndex = function(i, el, merge) {
   return [
@@ -35,50 +35,57 @@ Array.prototype.updateAtIndex = function(i, el, merge) {
   ];
 };
 
+Array.prototype.removeAtIndex = function(i) {
+  return [
+    ...this.slice(0, i),
+    ...this.slice(i + 1, this.length)
+  ];
+};
+
 const searchResults = createReducer({
-    [addPerson]: (state) => {
-      if(state.data.length < MAX_PEOPLE) {
-        return {
-          ...state,
-          data: state.data.concat({})
-        };
-      }
-      return state;
-    },
-    [removePerson]: (state) => {
-      if(state.data.length > MIN_PEOPLE) {
-        return {
-          ...state,
-          data: state.data.slice(0, state.data.length - 1)
-        }
-      }
-      return state;
-    },
-    [updatePerson]: (state, {index}) => {
+  [addPerson]: (state) => {
+    if(state.data.length < MAX_PEOPLE) {
       return {
         ...state,
-        data: state.data.updateAtIndex(index, {})
+        data: state.data.concat({})
       };
-    },
-    [search.request]: (state, payload) => ({
+    }
+    return state;
+  },
+  [removePerson]: (state, {index}) => {
+    if(state.data.length > MIN_PEOPLE) {
+      return {
         ...state,
-        request: payload,
-        loading: true,
-        error: null
-    }),
-    [search.ok]: (state, payload) =>
-    ({
-        ...state,
-        loading: false,
-        //payload.request[0] instead of payload.request because redux-act-async isnt perfectly designed
-        data: state.data.updateAtIndex(payload.request[0].index, payload.response)
-    }),
-    [search.error]: (state, payload) => ({
-        ...state,
-        loading: false,
-        error: payload.error
-    }),
-    [search.reset]: () => (defaultSearchResultsState)
+        data: state.data.removeAtIndex(index)
+      }
+    }
+    return state;
+  },
+  [updatePerson]: (state, {index}) => {
+    return {
+      ...state,
+      data: state.data.updateAtIndex(index, {})
+    };
+  },
+  [search.request]: (state, payload) => ({
+      ...state,
+      request: payload,
+      loading: true,
+      error: null
+  }),
+  [search.ok]: (state, payload) =>
+  ({
+      ...state,
+      loading: false,
+      //payload.request[0] instead of payload.request because redux-act-async isnt perfectly designed
+      data: state.data.updateAtIndex(payload.request[0].index, payload.response)
+  }),
+  [search.error]: (state, payload) => ({
+      ...state,
+      loading: false,
+      error: payload.error
+  }),
+  [search.reset]: () => (defaultSearchResultsState)
 } , defaultSearchResultsState);
 
 const people = createReducer({
@@ -110,7 +117,6 @@ const people = createReducer({
   [search.request]: (state, payload) => state.updateAtIndex(
     payload.index,
     {
-      ...defaultPersonState,
       query: state[payload.index].query
     },
     true
@@ -118,19 +124,20 @@ const people = createReducer({
 
   [addPerson]: (state) => {
     if(state.length < MAX_PEOPLE) {
-      return state.concat(defaultPersonState);
+      return state.concat(defaultPersonState());
     }
     return state;
   },
-  [removePerson]: (state) => {
+  [removePerson]: (state, {index}) => {
     if(state.length > MIN_PEOPLE) {
-      return state.slice(0, state.length - 1);
+      return state.removeAtIndex(index);
     }
     return state;
   },
-  [updatePerson]: (state, {index, newValue}) => state.updateAtIndex(index, {query: newValue}, true)
-}, [defaultPersonState, defaultPersonState])
+  [updatePerson]: (state, {index, newValue}) => state.updateAtIndex(index, {data: null, query: newValue}, true)
+}, [defaultPersonState(), defaultPersonState()])
 
+//_.fill(Array(INIT_PEOPLE), defaultPersonState())
 const rootReducer = combineReducers({
   routing,
   searchResults,

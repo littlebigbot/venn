@@ -1,0 +1,52 @@
+@import './constants';
+
+:global {
+  * {
+    font-size: 100%;
+    font-family: 'Catamaran', Helvetica, sans-serif;
+    font-weight: 100;
+  }
+
+  html {
+    box-sizing: border-box;
+  }
+  
+  *,
+  *:before,
+  *:after {
+     box-sizing: inherit;
+  }
+
+  strong {
+    font-weight: 400;
+  }
+
+  h1,h2,h3,h4,h5,h6 {
+    font-weight: 700;
+  }
+
+  html, body {
+    min-height: 100vh;
+    color: $primary-text-color;
+  }
+
+  body {
+    margin: 0;
+    background: $light-primary-color;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+
+  [data-reactroot] {
+    min-height: 100vh;
+    min-width: 100vw;
+  }
+}

@@ -10,6 +10,7 @@ import routes from './routes';
 import createHistory from 'history/createHashHistory'
 import { AppContainer } from 'react-hot-loader'
 import createLogger from 'redux-logger'
+import './global.css';
 
 const logger = createLogger();
 const history = createHistory();

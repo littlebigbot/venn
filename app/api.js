@@ -36,5 +36,5 @@ function callApi(endpoint, payload) {
 
 export const callSelectPerson = ({person}) => callApi(`/person/${person.id}`, {append_to_response: 'combined_credits'})
 
-export const callSearch = ({query}) => callApi('/search/person', {query})
+export const callSearch = ({query}) => query ? callApi('/search/person', {query}) : Promise.reject('Nothing to search')
 // export const callSelectPerson = ({person}) => callApi(`/person/${person.id}/combined_credits`)

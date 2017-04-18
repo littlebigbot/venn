@@ -1,0 +1,5 @@
+export const MAX_PEOPLE = 4;
+export const MIN_PEOPLE = 2;
+export const INIT_PEOPLE = 2;
+
+export const BLANK_THUMBNAIL = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAtCAQAAACQEyoRAAAAK0lEQVR42u3MMQ0AAAgDMOZf9FBBwtEKaNo5ErVarVar1Wq1Wq1Wq9Uv6gUWn1nUU2fcUwAAAABJRU5ErkJggg==';

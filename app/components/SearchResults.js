@@ -1,26 +1,26 @@
 import React, { Component } from 'react'
 import './SearchResults.css'
+import { imgPrefix } from '../utility';
+import { BLANK_THUMBNAIL } from '../constants';
+
+const THUMBNAIL_PREFIX = imgPrefix(45, 45);
 
 class SearchResults extends Component {
   constructor(props) {
     super(props);
-    this._select = this._select.bind(this);
-    this._renderPerson = this._renderPerson.bind(this);
+    this._renderResult = this._renderResult.bind(this);
   }
-  _select(id) {
-    return () => this.props.selectPerson(id);
-  }
-  _renderPerson(p){
-    return <div key={p.id}>
+  _renderResult(p){
+    return <li styleName="result" key={p.id} onClick={() => this.props.onSelect(p)}>
+      <img src={p.profile_path ? THUMBNAIL_PREFIX + p.profile_path : BLANK_THUMBNAIL} />
       {p.name}
-      <a onClick={this._select(p)}>Select</a>
-    </div>
+    </li>
   }
 	render() {
     const { results } = this.props;
-		return <div styleName="SearchResults">
-			{results && results.map(this._renderPerson)}
-		</div>;
+		return <ul styleName="SearchResults">
+			{results && results.map(this._renderResult)}
+		</ul>;
 	}
 }
 

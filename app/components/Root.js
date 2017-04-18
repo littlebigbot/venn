@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'react-router-redux'
-import './Root.css'
+import 'normalize.css/normalize.css'
 
 class Root extends Component {
 	render() {
