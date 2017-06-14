@@ -4,4 +4,4 @@ export const getCombinations = (arr, prefix = []) => (
   ), [])
 ).sort((a, b) => b.length - a.length);
 
-export const imgPrefix = (w, h) => `https://image.tmdb.org/t/p/w${w}${h ? `_and_h${h}_bestv2` : ''}/`;
+export const imgPrefix = (w, h) => `https://image.tmdb.org/t/p/w${w}${h ? `_and_h${h}_bestv2` : ''}`;

@@ -3,8 +3,8 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import './Intersections.css';
 import classNames from 'classnames';
-import { getCombinations } from '../utility';
-import { imgPrefix } from '../utility';
+import { getCombinations, imgPrefix } from '../utility';
+import { BLANK_POSTER } from '../constants'
 
 const POSTER_PREFIX = imgPrefix(300);
 
@@ -31,7 +31,7 @@ const Credit = ({id, media_type, index, people, combination}) => {
   const firstCredit = peoplesCredit.find(_.identity);
   // if(peoplesCredit) {
     return <div>
-      <img src={POSTER_PREFIX + firstCredit.poster_path} />
+      <img src={firstCredit.poster_path ? (POSTER_PREFIX + firstCredit.poster_path) : BLANK_POSTER} />
       <h4>{firstCredit.title || firstCredit.name}</h4>
       {combination.map(i => people[i] && <div style={people[i].style}>{people[i].data.name} as {peoplesCredit[i].character || peoplesCredit[i].job || people[i].data.name}</div>)}
     </div>
@@ -43,7 +43,7 @@ const Intersection = ({combination, sharedCredits, people, index}) => (
     <span styleName="count">{sharedCredits.length + ' - '}</span>
     {people.map((person, index) => <Person key={`person-${index}`} {...person} index={index} combination={combination} />)}
     <div styleName="credits">
-      <h3>Credits of {combination.length === 1 && 'only'} {combination.map(i => <span style={people[i].style}>{people[i].data.name}</span>)}</h3>
+      <h3>{combination.length === 1 ? 'Credits of only ' : 'Shared credits of '} {combination.map(i => <span style={people[i].style}>{people[i].data.name}</span>)}</h3>
       <div styleName="credits-list">
       {sharedCredits.map((credit, index) => <Credit key={[index, ...combination].join('-')} {...credit} index={index} people={people} combination={combination} />)}
       </div>
